@@ -1,0 +1,37 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace 全限名二者相同。两个文件在同一包目录下，或进行映射配置-->
+<mapper namespace="cn.hebeuit.dao.UserMapper">
+
+  <select id="getUsers" resultType="cn.hebeuit.entity.User">
+    select * from UsersTab order by id
+  </select>
+  <select id="getUsersByIds" parameterType="list" resultType="cn.hebeuit.entity.User">
+    select * from UsersTab
+    <where>
+      <foreach collection="list" open="id in(" close=")" item="id" separator=",">
+        #{id}
+      </foreach>
+    </where>
+  </select>
+  <select id="getUser" resultType="cn.hebeuit.entity.User">
+    select * from UsersTab where id=#{id}
+  </select>
+  <resultMap id="orders" type="cn.hebeuit.entity.User">
+    <id column="id" property="id"/>
+    <result column="username" property="username"/>
+    <collection property="orders" ofType="cn.hebeuit.entity.Order">
+      <id column="oid" property="oid"/>
+      <result column="uid" property="uid"/>
+      <result column="date" property="date"/>
+    </collection>
+  </resultMap>
+  <select id="getUserAndOrders" resultMap="orders">
+
+    select *,o.id  oid from UsersTab u,Orders o where u.id=o.uid
+  </select>
+  <insert id="addUser">
+    insert into UsersTab (username) values (#{name})
+  </insert>
+</mapper>

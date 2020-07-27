@@ -1,0 +1,18 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace 全限名二者相同。两个文件在同一包目录下，或进行映射配置-->
+<mapper namespace="cn.hebeuit.dao.OrderMapper">
+<resultMap id="order" type="cn.hebeuit.entity.Order">
+  <id column="id" property="oid"/>
+  <result column="uid" property="uid"/>
+  <result column="date" property="date"/>
+</resultMap>
+  <select id="getOrders" resultMap="order">
+    select * from Orders order by id
+  </select>
+  <insert id="putOrder" >
+    insert  into  Orders(uid,date) values (#{0},#{1})
+  </insert>
+
+</mapper>
